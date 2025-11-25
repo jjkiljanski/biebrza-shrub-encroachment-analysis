@@ -12,6 +12,13 @@ shapefile_path = r"E:\git_projects\biebrza-data\kopec_and_slawik_2020\MPC_1966_2
 # Output directory for per-category shapefiles
 output_dir_categories = r"E:\git_projects\biebrza-data\kopec_and_slawik_2020\mpc_change_categories"
 
+# =============================
+# NEW: PARAMETERS FOR SHRINKING
+# =============================
+# CRS of the Landsat photos (EDIT THIS TO YOUR ACTUAL EPSG)
+landsat_crs = "EPSG:32634"   # example UTM zone – replace with correct one
+shrink_distance_m = 25.0     # inward buffer distance in meters
+
 # Column names for Mean Percentage Coverage (MPC) of trees + shrubs
 col_1997 = "mpc_1997"
 col_2006 = "mpc_2006"   # not used for final categories, but kept for completeness
@@ -22,7 +29,7 @@ wetland_threshold = 10.0   # MPC < 10% -> wetland (open marsh / meadow)
 tree_threshold    = 60.0   # MPC >= 60% -> trees (closed canopy)
 
 # Minimum %-point change to treat as a "real" change
-delta_threshold   = 20.0   # |mpc_2015 - mpc_1997| < 10% -> stable
+delta_threshold   = 20.0   # |mpc_2015 - mpc_1997| < 20% -> stable
 
 
 # =============================
@@ -39,6 +46,28 @@ required_cols = [col_1997, col_2006, col_2015]
 missing = [c for c in required_cols if c not in gdf.columns]
 if missing:
     raise ValueError(f"Missing MPC columns in shapefile: {missing}")
+
+# =============================
+# NEW: ENSURE CRS & SHRINK GEOMETRIES
+# =============================
+if gdf.crs is None:
+    raise ValueError("Input shapefile has no CRS defined; please set it before running.")
+
+print(f"Original CRS: {gdf.crs}")
+
+# Reproject to Landsat CRS if needed
+if str(gdf.crs) != str(landsat_crs):
+    print(f"Reprojecting to Landsat CRS: {landsat_crs}")
+    gdf = gdf.to_crs(landsat_crs)
+
+print(f"Shrinking geometries by {shrink_distance_m} m (negative buffer)...")
+gdf["geometry"] = gdf.geometry.buffer(-shrink_distance_m)
+
+# Optionally drop empty geometries (if any polygons collapsed completely)
+num_empty = gdf.geometry.is_empty.sum()
+if num_empty > 0:
+    print(f"Warning: {num_empty} geometries became empty after shrinking; dropping them.")
+    gdf = gdf[~gdf.geometry.is_empty].copy()
 
 # Compute MPC change 1997–2015 (in %-points)
 change_1997_2015_col = "mpc_change_1997_2015"
@@ -68,20 +97,29 @@ def cover_state(mpc: float,
 def classify_trajectory(row) -> str:
     """
     Classify 1997 -> 2015 trajectory based on discrete states + MPC change magnitude.
+
+    - 'stable_*'  : s0 == s1 AND abs(dMPC) < delta_threshold
+    - '*_to_*'    : s0 != s1 AND abs(dMPC) >= delta_threshold
+    - 'undefined' : everything else (including no_data, weird combinations, etc.)
     """
     s0 = row["state_1997"]
     s1 = row["state_2015"]
     dMPC = row[change_1997_2015_col]
 
-    if s0 == "no_data" or s1 == "no_data":
-        return "no_data"
+    # Missing data -> undefined
+    if s0 == "no_data" or s1 == "no_data" or dMPC is None or np.isnan(dMPC):
+        return "undefined"
 
-    # If states are the same OR the change is very small, call it stable
-    if s0 == s1 or abs(dMPC) < delta_threshold:
+    # STRICT stable: same state AND small absolute change
+    if (s0 == s1) and (abs(dMPC) < delta_threshold):
         return f"stable_{s1}"
 
-    # Otherwise treat as a transition: s0 -> s1
-    return f"{s0}_to_{s1}"
+    # Transition: different state AND sufficiently large change
+    if (s0 != s1) and (abs(dMPC) >= delta_threshold):
+        return f"{s0}_to_{s1}"
+
+    # Everything else
+    return "undefined"
 
 
 # "Nice" categories you primarily care about; others will be grouped as "other"
@@ -91,7 +129,7 @@ allowed_categories = {
     "wetland_to_trees",
     "stable_shrubs",
     "shrubs_to_trees",
-    "stable_trees",
+    "stable_trees"
 }
 
 
@@ -147,10 +185,32 @@ for cat, cnt in vc_simple.items():
 
 
 # =============================
-# EXPORT ONE SHAPEFILE PER CATEGORY
+# NEW: EXPORT ONE SHAPEFILE WITH ALL SQUARES (SHRUNK)
+#      traj_simple_97_15 EMPTY IF NOT IN allowed_categories
 # =============================
 
 category_col = "traj_simple_97_15"  # use simplified categories for outputs
+
+print("\nPreparing combined shapefile with all squares...")
+
+gdf_all = gdf.copy()
+
+# Set traj_simple_97_15 = "" for categories not in allowed_categories
+mask_allowed = gdf_all[category_col].isin(allowed_categories)
+gdf_all.loc[~mask_allowed, category_col] = ""
+
+combined_out_path = os.path.join(
+    output_dir_categories,
+    f"biebrza_MPC_all_traj_simple_97_15_shrunk{int(shrink_distance_m)}m.shp"
+)
+
+gdf_all.to_file(combined_out_path)
+print(f"Written combined shapefile with all (shrunk) squares -> {combined_out_path}")
+
+
+# =============================
+# EXPORT ONE SHAPEFILE PER CATEGORY (USING SHRUNK GEOMETRIES)
+# =============================
 
 print(f"\nWriting per-category shapefiles to: {output_dir_categories}\n")
 
@@ -158,7 +218,7 @@ unique_categories = sorted(gdf[category_col].unique())
 
 for category in unique_categories:
     # Optionally skip no_data / other
-    if category in ("no_data", "other"):
+    if category in ("no_data", "other", ""):
         print(f"Skipping category '{category}'")
         continue
 
