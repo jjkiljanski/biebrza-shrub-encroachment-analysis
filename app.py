@@ -67,13 +67,13 @@ Understanding *where* and *how fast* encroachment occurs is essential for conser
 
 ## 📘 Background: MPC Trajectories From Kopeć & Sławik (2020)
 
-A key reference point for this project is the work of **Kopeć & Sławik (2020)**, who developed a robust framework for analyzing long-term vegetation change using the **Maximum Possible Cover (MPC)** concept. They derived shrub/tree cover estimates for **125 × 125 m grid cells** in the **lower Biebrza basin** using multi-temporal Landsat imagery. These MPC trajectories enabled a classification of land-cover change processes such as *wetland stability*, *shrub encroachment*, and *succession to forest*.
+A key reference point for this project is the work of **Kopeć & Sławik (2020)**, who developed a robust framework for analyzing long-term vegetation change using the **Mean Percentage Coverage (MPC)** concept. They derived shrub/tree cover estimates for **125 × 125 m grid cells** in the **lower Biebrza basin** using multi-temporal Landsat imagery. These MPC trajectories enabled a classification of land-cover change processes such as *wetland stability*, *shrub encroachment*, and *succession to forest*.
 
 In this project, their published MPC dataset is used as **weak supervision** to train a machine-learning model at a finer spatial resolution. Each MPC square provides a coarse trajectory label, which is then transferred to all 30-m Landsat pixels within that square.
 
 **Full citation (APA):**
 
-Kopeć, D., & Sławik, Ł. (2020). *Multi-temporal assessment of shrub and tree encroachment in wetlands using Landsat-derived Maximum Possible Cover (MPC)*. Journal of Environmental Management, 268, 110669. https://doi.org/10.1016/j.jenvman.2020.110669
+Kopeć, D., & Sławik, Ł. (2020). How to effectively use long-term remotely sensed data to analyze the process of tree and shrub encroachment into open protected wetlands. Applied Geography, 125, 102345. https://doi.org/10.1016/j.apgeog.2020.102345
 
 ---
 
