@@ -20,7 +20,7 @@ The project integrates:
 - **PyTorch** (model training)
 - **Streamlit** (interactive visualization)
 - **rasterio / numpy / pandas** (data manipulation)
-- Ecological context from **Kopeć & Sławik (2020)**, who developed MPC-based vegetation trajectories.
+- Ecological context from **Kopeć & Sławik (2020)**, who provide MPC vegetation estimates for the lower Biebrza basin.
 
 ---
 
@@ -28,7 +28,7 @@ The project integrates:
 
 Biebrza National Park protects one of Europe’s largest peatland ecosystems, dominated by wet meadows, sedge marshes, and floodplain wetlands. Due to land abandonment and loss of traditional mowing, the area has experienced **rapid shrub encroachment**, impacting biodiversity, hydrology, and landscape.
 
-The **Mean Percentage Coverage (MPC)** estimates for years 1997 and 2015 by Kopeć & Sławik (2020) provide a measure of shrub/tree cover on a **125 × 125 m** grid. These MPC trajectories form the weak-supervision basis for this project.
+The **Mean Percentage Coverage (MPC)** estimates for years 1997 and 2015 by Kopeć & Sławik (2020) provide a measure of shrub/tree cover on a **125 × 125 m** grid for the lower Biebrza basin. These MPC trajectories form the weak-supervision basis for this project.
 
 **APA citation:**  
 Kopeć, D., & Sławik, Ł. (2020). *How to effectively use long-term remotely sensed data to analyze the process of tree and shrub encroachment into open protected wetlands.* Journal of Environmental Management, 268, 110669.
