@@ -1,4 +1,6 @@
 
+![Zoomed encroachment probability](visualization/encroachment_zoomed.png)
+
 # 🌿 Biebrza Shrub Encroachment – Landsat Time Series & Deep Learning
 
 This repository contains the full workflow, data, model, and interactive app for analyzing **shrub and woody vegetation encroachment** in **Biebrza National Park (Poland)** using **biannual Landsat composites (1997–2015)** and a **1D convolutional neural network** trained on per-pixel spectral time series.
