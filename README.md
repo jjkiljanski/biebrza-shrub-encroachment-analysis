@@ -4,6 +4,13 @@
   <sub><em>Zoomed view of predicted shrub encroachment probability in Biebrza National Park (Conv1D model, Landsat biannual composites).</em></sub>
 </p>
 
+<p align="center">
+  <a href="https://biebrza-shrub-encroachment-analysis.streamlit.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Launch%20App-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit">
+  </a>
+</p>
+
+
 # 🌿 Biebrza Shrub Encroachment – Landsat Time Series & Deep Learning
 
 This repository contains the full workflow, data, model, and interactive app for analyzing **shrub and woody vegetation encroachment** in **Biebrza National Park (Poland)** using **biannual Landsat composites (1997–2015)** and a **1D convolutional neural network** trained on per-pixel spectral time series.
