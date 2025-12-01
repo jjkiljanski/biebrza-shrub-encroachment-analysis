@@ -1,4 +1,3 @@
-# app.py
 """
 Streamlit app entry point for exploring shrub/woody encroachment Conv1D
 model outputs in Biebrza National Park.
