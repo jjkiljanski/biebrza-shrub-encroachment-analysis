@@ -1,5 +1,8 @@
-
-![Zoomed encroachment probability](visualization/encroachment_zoomed.png)
+<p align="center">
+  <img src="visualization/encroachment_zoomed.png" width="850" alt="Encroachment probability zoomed view">
+  <br>
+  <sub><em>Zoomed view of predicted shrub encroachment probability in Biebrza National Park (Conv1D model, Landsat biannual composites).</em></sub>
+</p>
 
 # 🌿 Biebrza Shrub Encroachment – Landsat Time Series & Deep Learning
 
