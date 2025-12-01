@@ -19,11 +19,11 @@ col_2015 = "mpc_2015"
 output_mode = "images"      # change to "images" if desired
 
 # For PDF mode
-output_pdf = "output/kopec_and_slawik_2020_analysis/biebrza_mpc_changes_and_histograms.pdf"
+output_pdf = "kopec_and_slawik_2020_initial_exploration/biebrza_mpc_changes_and_histograms.pdf"
 
 # For image mode (one file per change period & plot type)
-map_image_template = "output/kopec_and_slawik_2020_analysis/biebrza_mpc_change_map_{label}.png"
-hist_image_template = "output/kopec_and_slawik_2020_analysis/biebrza_mpc_change_hist_{label}.png"
+map_image_template = "kopec_and_slawik_2020_initial_exploration/biebrza_mpc_change_map_{label}.png"
+hist_image_template = "kopec_and_slawik_2020_initial_exploration/biebrza_mpc_change_hist_{label}.png"
 
 # Plot appearance
 map_cmap_name = "RdBu_r"  # diverging colormap; red=increase, blue=decrease

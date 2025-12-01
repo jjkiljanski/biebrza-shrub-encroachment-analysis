@@ -17,10 +17,10 @@ mpc_cols = ["mpc_1966", "mpc_1980", "mpc_1997",
 output_mode = "images"      # change to "images" if desired
 
 # For PDF mode
-output_pdf = "output/kopec_and_slawik_2020_analysis/biebrza_mpc_all_years.pdf"
+output_pdf = "kopec_and_slawik_2020_initial_exploration/biebrza_mpc_all_years.pdf"
 
 # For image mode (one file per year)
-image_template = "output/kopec_and_slawik_2020_analysis/biebrza_mpc_{year}.png"
+image_template = "kopec_and_slawik_2020_initial_exploration/biebrza_mpc_{year}.png"
 
 # Plot appearance
 cmap_name = "YlGn"
