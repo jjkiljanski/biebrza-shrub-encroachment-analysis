@@ -117,6 +117,8 @@ These feed the Streamlit visualization.
 
 ## 🌐 Streamlit App (`app.py`)
 
+Check out the live app under the link [https://biebrza-shrub-encroachment-analysis.streamlit.app/](https://biebrza-shrub-encroachment-analysis.streamlit.app/).
+
 Features:
 ### **🗺 Map Tab**
 - View model predictions over Biebrza:
